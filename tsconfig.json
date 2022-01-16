@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "target": "ES2020",
+    // "lib": [],
+    "module": "ESNext",
+    "rootDir": "src",
+    "moduleResolution": "node",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "build",
+    // "removeComments": true,
+    "declarationDir": "./build/types",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "useUnknownInCatchVariables": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true
+  }
+}

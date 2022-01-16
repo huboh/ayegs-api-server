@@ -1,0 +1,12 @@
+{
+  "name": "ayegs-server",
+  "version": "1.0.0",
+  "description": "api server for ayegs - e-commerce app for accessories with express, typescript, react, mongoDB e.t.c ",
+  "main": "build/index.js",
+  "types": "/build/types/index.d.ts",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "huboh",
+  "license": "ISC"
+}
