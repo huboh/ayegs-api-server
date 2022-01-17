@@ -9,6 +9,8 @@ const port = PORT ?? 4000;
 
 const database = new DataBase();
 
+app.use('/api/products', routes.productRouter);
+
 app.use(routes.notFound);
 app.use(routes.serverError);
 
