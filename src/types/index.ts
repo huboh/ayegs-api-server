@@ -7,5 +7,6 @@ export interface SendJsonProps {
   status: 'success' | 'error';
   statusCode: number;
   message?: string;
-  data?: object;
+  data?: unknown;
+  errors?: unknown;
 }

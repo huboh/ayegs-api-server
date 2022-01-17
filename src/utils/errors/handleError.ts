@@ -3,12 +3,13 @@ import { sendJson } from '../index';
 
 import { NextFunction, Response, Request } from 'express';
 
-const handleError = (error: unknown, request: Request, response: Response, next: NextFunction) => {
+const handleError = (error: unknown, request: Request, response: Response, next: NextFunction, errors?: unknown) => {
   let message = error instanceof Error ? error.message : undefined;
   let statusCode = 500;
-  let data = undefined;
 
   if (error instanceof Errors.BaseError) {
+    errors = error.errors;
+
     switch (error.name as keyof typeof Errors) {
       case 'ValidaionError': statusCode = 406; break;
       case 'ForbiddenError': statusCode = 403; break;
@@ -24,7 +25,7 @@ const handleError = (error: unknown, request: Request, response: Response, next:
   }
 
   sendJson(response, {
-    data,
+    errors,
     message,
     statusCode,
     status: 'error',
