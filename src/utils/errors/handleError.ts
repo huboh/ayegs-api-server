@@ -18,7 +18,7 @@ const handleError = (error: unknown, request: Request, response: Response, next:
       case 'InvalidPayloadError': statusCode = 400; break;
       case 'InvalidResourceError': statusCode = 400; break;
       case 'ServiceUnavailableError': statusCode = 403; break;
-      default: statusCode = 500; return;
+      default: next(error); return;
     }
   } else {
     return next(error);
