@@ -2,11 +2,28 @@
   "name": "ayegs-server",
   "version": "1.0.0",
   "description": "api server for ayegs - e-commerce app for accessories with express, typescript, react, mongoDB e.t.c ",
-  "main": "build/index.js",
-  "types": "/build/types/index.d.ts",
+  "main": "src/index.ts",
   "scripts": {
+    "start:dev": "nodemon --ext '.ts, .json' --exec ts-node src/",
+    "lint": "npx eslint .",
     "test": "jest"
   },
   "author": "huboh",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^12.0.4",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.6"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.7",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  }
 }
