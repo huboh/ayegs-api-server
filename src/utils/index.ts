@@ -1,3 +1,4 @@
+export * as tokens from './tokens';
 export * as passwords from './passwords';
 export { default as Errors } from './errors';
 export { default as DataBase } from './Database';
@@ -30,17 +31,32 @@ export function validateUser(user: SubmittedUser) {
   const { email, password, firstName } = user;
   const errors = [
     validator.isEmail(email) ? true : 'invalid email address',
-    validator.isAlpha(firstName) ? true : 'invalid name, must be only contain letters',
-    validator.isStrongPassword(password, { minLength: 6 }) ? true : 'invalid password'
+    validator.isAlpha(firstName) ? true : 'invalid name : must only contain letters',
+    validator.isStrongPassword(password, { minLength: 6 }) ? true : 'invalid password : must contain at least 1 LowerCase letter, Uppercase letter & a Symbol'
   ].filter(
     (e) => typeof e !== 'boolean'
   );
 
   if (errors.length) {
-    throw new Errors.ValidaionError('user validation error', errors);
+    throw new Errors.ValidaionError('validation error', errors);
   }
 
   return {
     email, password, firstName
   };
+}
+
+export function getHeaderAuthToken(header: string | undefined, type: 'Bearer' | 'Basic') {
+  const errors: string[] = [];
+  const errorMessage = 'authorization error';
+  const [authType, token] = header?.trim().split(' ') ?? [];
+
+  (token == undefined) && errors.push(`no token specified`);
+  (authType !== type) && errors.push(`invalid authorization type`);
+
+  if (errors.length) {
+    throw new Errors.InvalidPayloadError(errorMessage, errors);
+  }
+
+  return token;
 }
