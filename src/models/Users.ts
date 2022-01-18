@@ -4,16 +4,16 @@ import { Schema, model } from 'mongoose';
 
 const UserSchema = new Schema({
   name: {
-    type: String
+    type: String, lowercase: true
   },
   avatar_url: {
-    type: String
+    type: String, lowercase: true
   },
   last_name: {
-    type: String
+    type: String, lowercase: true
   },
   first_name: {
-    type: String
+    type: String, lowercase: true
   },
   email_verified: {
     type: Boolean, default: false
