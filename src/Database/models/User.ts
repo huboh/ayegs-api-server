@@ -30,8 +30,8 @@ const UserSchema = new Schema({
     ]
   },
   phone: {
-    type: String, unique: true, lowercase: true, validate: [
-      validator.isMobilePhone, 'invalid phone number'
+    type: String, unique: true, validate: [
+      (number: string) => number ? validator.isMobilePhone(number, undefined, { strictMode: true }) : true, 'invalid phone number'
     ]
   },
   meta: {
@@ -39,13 +39,13 @@ const UserSchema = new Schema({
       city: { type: String, lowercase: true },
       address: { type: String, lowercase: true },
       country: { type: String, lowercase: true },
-      zip_code: { type: String, lowercase: true, length: 6 },
+      zipCode: { type: String, lowercase: true, length: 6 },
     },
     payment: {
       expiry: { type: String, lowercase: true },
       provider: { type: String, lowercase: true },
-      account_no: { type: String, lowercase: true },
-      payment_type: { type: String, lowercase: true },
+      accountNo: { type: String, lowercase: true },
+      paymentType: { type: String, lowercase: true },
     }
   },
 },
