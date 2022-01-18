@@ -6,19 +6,19 @@ const UserSchema = new Schema({
   name: {
     type: String, lowercase: true
   },
-  avatar_url: {
+  avatarUrl: {
     type: String, lowercase: true
   },
-  last_name: {
+  lastName: {
     type: String, lowercase: true
   },
-  first_name: {
+  firstName: {
     type: String, lowercase: true
   },
-  email_verified: {
+  isEmailVerified: {
     type: Boolean, default: false
   },
-  phone_verified: {
+  isPhoneVerified: {
     type: Boolean, default: false
   },
   password: {
@@ -34,6 +34,20 @@ const UserSchema = new Schema({
       validator.isMobilePhone, 'invalid phone number'
     ]
   },
+  meta: {
+    location: {
+      city: { type: String, lowercase: true },
+      address: { type: String, lowercase: true },
+      country: { type: String, lowercase: true },
+      zip_code: { type: String, lowercase: true, length: 6 },
+    },
+    payment: {
+      expiry: { type: String, lowercase: true },
+      provider: { type: String, lowercase: true },
+      account_no: { type: String, lowercase: true },
+      payment_type: { type: String, lowercase: true },
+    }
+  },
 },
   {
     timestamps: true,
@@ -44,8 +58,8 @@ UserSchema.pre('save', async function () {
   this.password = await passwords.hashPassword(this.password);
 });
 
-const Users = model('User', UserSchema);
+const User = model('User', UserSchema);
 
 export {
-  Users as default
+  User as default
 };
