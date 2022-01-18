@@ -5,8 +5,8 @@ export { default as handleError } from './errors/handleError';
 
 
 import { STATUS_CODES } from 'http';
-import { SendJsonProps } from '../types';
-import { Express, Response } from 'express';
+import { SendJsonProps, SubmittedUser } from '../types';
+import { Express, Response, RequestHandler } from 'express';
 
 
 export function sendJson(response: Response, jsonData: SendJsonProps) {
@@ -18,4 +18,8 @@ export function sendJson(response: Response, jsonData: SendJsonProps) {
 
 export function startServer(server: Express, port: number | string, callback?: () => void) {
   server.listen(Number(port), callback);
+}
+
+export function injectMiddlewares(server: Express, middlewares: RequestHandler[]) {
+  server.use(...middlewares);
 }
