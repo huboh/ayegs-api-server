@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { passwords } from '../utils';
+import { passwords } from '../../utils';
 import { Schema, model } from 'mongoose';
 
 const UserSchema = new Schema({

@@ -1,7 +1,6 @@
 export * as tokens from './tokens';
 export * as passwords from './passwords';
 export { default as Errors } from './errors';
-export { default as DataBase } from './Database';
 export { default as handleError } from './errors/handleError';
 
 

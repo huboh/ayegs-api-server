@@ -1,7 +1,8 @@
 import express from 'express';
+import DataBase from './Database';
 import * as routes from './routes';
 import middlewares from './middlewares';
-import { DataBase, startServer, injectMiddlewares } from './utils';
+import { startServer, injectMiddlewares } from './utils';
 
 const { PORT, DATABASE_HOST } = process.env;
 
