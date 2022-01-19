@@ -26,6 +26,12 @@ export function injectMiddlewares(server: Express, middlewares: RequestHandler[]
   server.use(...middlewares);
 }
 
+export function isInstanceof<T extends Function>(value: unknown, classes: T[]): value is T {
+  return classes.every((c) => {
+    value instanceof c;
+  });
+}
+
 export function validateUser(user: SubmittedUser) {
   const { email, password, firstName } = user;
   const errors = [
