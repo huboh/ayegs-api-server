@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongoose';
+
 export const enum ResponseStatus {
   success = 'success',
   error = 'error'
@@ -18,7 +20,6 @@ export interface SubmittedUser {
   firstName: string;
   lastName: string;
 }
-
 
 export interface User {
   name: string;
@@ -44,4 +45,9 @@ export interface User {
       paymentType: string;
     };
   },
+}
+
+export interface GetProductProps {
+  _id?: string | ObjectId;
+  count: number;
 }

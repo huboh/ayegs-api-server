@@ -11,9 +11,10 @@ interface ConnectProps {
 export default class DataBase {
   // * models api
   public User = api.User;
+  public Product = api.Product;
 
-  static _singletonInstance: DataBase;
   private connection: Connection = mongoose.connection;
+  private static _singletonInstance: DataBase;
 
   constructor() {
     return DataBase._singletonInstance ?? (DataBase._singletonInstance = this);
