@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import DataBase from '../../Database';
 import { SubmittedUser } from '../../types';
-import { sendJson, handleError, validateUser, tokens, getHeaderAuthToken } from '../../utils';
+import { sendJson, handleError, handleMongooseError, validateUser, tokens, getHeaderAuthToken } from '../../utils';
 
 const database = new DataBase();
 const mainRouter = Router({ caseSensitive: false });
@@ -30,8 +30,7 @@ mainRouter.post('/signup', async (request, response, next) => {
     });
 
   } catch (error) {
-    console.log(error);
-    handleError(error, request, response, next);
+    handleMongooseError(error, response) || handleError(error, request, response, next);
   }
 });
 
@@ -54,12 +53,7 @@ mainRouter.post('/login', async (request, response, next) => {
     });
 
   } catch (error) {
-
-    const wasHandled = await tokens.handleTokenError(error, response);
-
-    if (!wasHandled) {
-      handleError(error, request, response, next);
-    }
+    tokens.handleTokenError(error, response) || handleError(error, request, response, next);
   }
 
 });
