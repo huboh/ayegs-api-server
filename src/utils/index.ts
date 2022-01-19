@@ -7,6 +7,7 @@ export { default as handleError } from './errors/handleError';
 import { Errors } from '.';
 import validator from 'validator';
 import { STATUS_CODES } from 'http';
+import { getUserFromObject } from '../Database/utils';
 import { SendJsonProps, SubmittedUser } from '../types';
 import { Express, Response, RequestHandler } from 'express';
 
@@ -40,9 +41,9 @@ export function validateUser(user: SubmittedUser) {
     throw new Errors.ValidaionError('validation error', errors);
   }
 
-  return {
-    email, password, firstName
-  };
+  return (
+    user
+  );
 }
 
 export function getHeaderAuthToken(header: string | undefined, type: 'Bearer' | 'Basic') {
