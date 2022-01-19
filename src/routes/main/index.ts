@@ -22,7 +22,7 @@ mainRouter.post('/signup', async (request, response, next) => {
   try {
     const submittedUserDetails = request.body as SubmittedUser;
     const validatedUserDetails = validateUser(submittedUserDetails);
-    const userFromDatabase = await database.User.createUser(validatedUserDetails);
+    const userFromDatabase = await database.User.registerUser(validatedUserDetails);
     const token = await tokens.generateToken({ userId: userFromDatabase._id });
     const user = { ...getUserFromObject(userFromDatabase), password: undefined };
 

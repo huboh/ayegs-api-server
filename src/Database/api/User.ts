@@ -13,7 +13,7 @@ export default {
     });
   },
 
-  async createUser(userDetails: Partial<UserType>) {
+  async registerUser(userDetails: Partial<UserType>) {
     if (await this.getUser({ email: userDetails.email })) throw new Errors.ForbiddenError(
       'user already exists'
     );
