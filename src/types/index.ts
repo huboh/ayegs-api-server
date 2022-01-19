@@ -35,7 +35,7 @@ export interface User {
       city: string;
       address: string;
       country: string;
-      zipCode: number,
+      zipCode: string,
     },
     payment: {
       expiry: string;
