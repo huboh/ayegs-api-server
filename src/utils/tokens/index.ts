@@ -1,5 +1,6 @@
 
 import { sendJson } from '..';
+import { isInstanceof } from '..';
 import { Response } from 'express';
 import jsonWebToken, { SignOptions, VerifyOptions } from 'jsonwebtoken';
 
@@ -18,10 +19,10 @@ const verifyToken = async (token: string, options: VerifyOptions = {}) => {
   });
 };
 
-const handleTokenError = async (error: unknown, response: Response) => {
+const handleTokenError = (error: unknown, response: Response) => {
   const { JsonWebTokenError, NotBeforeError, TokenExpiredError } = jsonWebToken;
 
-  if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError || error instanceof NotBeforeError) {
+  if (isInstanceof(error, [JsonWebTokenError, NotBeforeError, TokenExpiredError])) {
     const message = error.name == 'TokenExpiredError' ? 'error: token expired' : 'error: invalid token';
     const statusCode = 403;
 
