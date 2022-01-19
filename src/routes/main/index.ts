@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import DataBase from '../../Database';
+import { Errors, passwords } from '../../utils';
 import { SubmittedUser } from '../../types';
+import { getUserFromObject } from '../../Database/utils';
 import { sendJson, handleError, handleMongooseError, validateUser, tokens, getHeaderAuthToken } from '../../utils';
 
 const database = new DataBase();
@@ -16,40 +18,41 @@ mainRouter.get('/', async (request, response) => {
 });
 
 mainRouter.post('/signup', async (request, response, next) => {
+
   try {
     const submittedUserDetails = request.body as SubmittedUser;
     const validatedUserDetails = validateUser(submittedUserDetails);
-    const user = await database.User.createUser(validatedUserDetails);
-    const token = await tokens.generateToken({ userId: user._id });
+    const userFromDatabase = await database.User.createUser(validatedUserDetails);
+    const token = await tokens.generateToken({ userId: userFromDatabase._id });
+    const user = { ...getUserFromObject(userFromDatabase), password: undefined };
 
     sendJson(response, {
       statusCode: 201,
       status: 'success',
+      data: { token, user },
       message: 'registration successful',
-      data: { token, user }
     });
 
   } catch (error) {
     handleMongooseError(error, response) || handleError(error, request, response, next);
   }
+
 });
 
 mainRouter.post('/login', async (request, response, next) => {
 
   try {
-    const userDetails = request.body as SubmittedUser;
-    const validatedUserDetails = validateUser(userDetails);
-    const bearerToken = getHeaderAuthToken(request.header('Authorization'), 'Bearer');
-    const token = await tokens.verifyToken(bearerToken);
+    const submittedUserDetails = request.body as SubmittedUser;
+    const { email, password } = validateUser(submittedUserDetails);
+    const userFromDatabase = await database.User.loginUser({ email, password });
+    const token = await tokens.generateToken({ userId: userFromDatabase._id });
+    const user = { ...getUserFromObject(userFromDatabase), password: undefined };
 
     sendJson(response, {
-      statusCode: 201,
+      statusCode: 202,
       status: 'success',
-      message: 'registration successful',
-      data: {
-        token,
-        user: validatedUserDetails
-      }
+      message: 'login successful',
+      data: { token, user }
     });
 
   } catch (error) {
