@@ -7,7 +7,6 @@ export { default as handleError } from './errors/handleError';
 import { Errors } from '.';
 import validator from 'validator';
 import { STATUS_CODES } from 'http';
-import { getUserFromObject } from '../Database/utils';
 import { SendJsonProps, SubmittedUser } from '../types';
 import { Express, Response, RequestHandler } from 'express';
 
@@ -38,7 +37,7 @@ export function validateUser(user: SubmittedUser) {
   );
 
   if (errors.length) {
-    throw new Errors.ValidaionError('validation error', errors);
+    throw new Errors.ValidationError('validation error', errors);
   }
 
   return (

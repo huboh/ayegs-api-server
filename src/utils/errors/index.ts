@@ -10,7 +10,7 @@ const Errors = {
   BaseError,
   ServerError: class extends BaseError { },
   NotAuthorized: class extends BaseError { },
-  ValidaionError: class extends BaseError { },
+  ValidationError: class extends BaseError { },
   ForbiddenError: class extends BaseError { },
   AuthorizationError: class extends BaseError { },
   InvalidPayloadError: class extends BaseError { },

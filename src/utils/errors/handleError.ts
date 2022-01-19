@@ -12,7 +12,7 @@ const handleError = (error: unknown, request: Request, response: Response, next:
   }
 
   switch (error.name as keyof typeof Errors) {
-    case 'ValidaionError': statusCode = 406; break;
+    case 'ValidationError': statusCode = 406; break;
     case 'ForbiddenError': statusCode = 403; break;
     case 'NotAuthorized': statusCode = 401; break;
     case 'AuthorizationError': statusCode = 401; break;

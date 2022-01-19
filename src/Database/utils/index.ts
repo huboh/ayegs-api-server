@@ -3,7 +3,7 @@ import { Errors } from "../../utils";
 
 export const getUserFromObject = (user: Partial<User>): User => {
   if (!user.email || !user.password) {
-    throw new Errors.ValidaionError('email or password not specified');
+    throw new Errors.ValidationError('email or password not specified');
   }
 
   return {

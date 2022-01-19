@@ -25,15 +25,3 @@ database.connect({
   onError: () => { console.log('database error 😬, closing database...'), database.close(); },
   onOpen: () => startServer(app, port, () => console.log(`server started on port: ${port}`)),
 });
-
-// Users.create({
-//   name: 'john doe',
-//   avatar_url: 'https://www.google.com',
-//   last_name: 'doe',
-//   first_name: 'john',
-//   email_verified: true,
-//   email: 'johndoe@mail.com',  //required
-//   phone_verified: true,
-//   phone: '090464535552',
-//   password: 'dfdiof87w3ey',  // required
-// });
