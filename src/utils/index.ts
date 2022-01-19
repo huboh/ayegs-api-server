@@ -7,6 +7,7 @@ export { default as handleError } from './errors/handleError';
 import { Errors } from '.';
 import validator from 'validator';
 import { STATUS_CODES } from 'http';
+import { Error as MongooseError } from 'mongoose';
 import { SendJsonProps, SubmittedUser } from '../types';
 import { Express, Response, RequestHandler } from 'express';
 
@@ -64,4 +65,53 @@ export function getHeaderAuthToken(header: string | undefined, type: 'Bearer' | 
   }
 
   return token;
+}
+
+export function handleMongooseError(error: unknown, response: Response) {
+  let statusCode = 500;
+  let wasHandled = false;
+  let message: string | undefined;
+  const errors: string[] = [];
+
+  if (error instanceof Error && error.name.includes('MongoServerError')) {
+    wasHandled = true;
+
+    switch ((error as any).code) {
+      case 11000: {
+        statusCode = 406; Object.keys((error as any).keyValue).forEach(key => key && errors.push(`${key} already exists`)); break;
+      }
+
+      default: break;
+    }
+
+    sendJson(response, {
+      errors,
+      message,
+      statusCode,
+      status: 'error',
+    });
+  }
+
+  if (error instanceof MongooseError) {
+    wasHandled = true;
+
+    switch (error.name) {
+      case 'ParallelSaveError': statusCode = 429; break;
+      case 'ValidationError': {
+        statusCode = 406; message = 'validation error';
+        Object.values((<any> error).errors).forEach(err => errors.push((err as any).properties.message)); break;
+      }
+
+      default: break;
+    }
+
+    sendJson(response, {
+      errors,
+      message,
+      statusCode,
+      status: 'error',
+    });
+  }
+
+  return wasHandled;
 }
