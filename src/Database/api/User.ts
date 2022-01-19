@@ -31,4 +31,30 @@ export default {
 
   },
 
+  async loginUser(userDetails: Partial<SubmittedUser>) {
+    const validatedUserDetails = validateUser(userDetails as SubmittedUser);
+    const userFromDatabase = await this.getUser({ email: validatedUserDetails.email });
+
+    if (userFromDatabase) {
+      if (await passwords.comparePasswords(validatedUserDetails.password, userFromDatabase.password)) {
+        return userFromDatabase;
+
+      } else {
+        throw new Errors.AuthorizationError(
+          'invalid email or password'
+        );
+      }
+
+    } else {
+      // * user does not exists, causing a delay to hide the fact that email exists in database
+      await passwords.comparePasswords(
+        validatedUserDetails.password, `$2b$${passwords.SALT_ROUNDS}$invalid_password.dddddddddddddddddddddddddddddddddddd`
+      );
+
+      throw new Errors.AuthorizationError(
+        'invalid email or password'
+      );
+    }
+  }
+
 };
