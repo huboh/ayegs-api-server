@@ -37,7 +37,7 @@ export function validateUser(user: SubmittedUser) {
   const { email, password, firstName } = user;
   const errors = [
     validator.isEmail(email) ? true : 'invalid email address',
-    validator.isAlpha(firstName) ? true : 'invalid name : must only contain letters',
+    validator.isAlpha(firstName ?? 'null') ? true : 'invalid name : must only contain letters',
     validator.isStrongPassword(password, { minLength: 6 }) ? true : 'invalid password : must contain at least 1 LowerCase letter, Uppercase letter & a Symbol'
   ].filter(
     (e) => typeof e !== 'boolean'
