@@ -15,6 +15,7 @@ const handleError = (error: unknown, request: Request, response: Response, next:
     case 'ValidationError': statusCode = 406; break;
     case 'ForbiddenError': statusCode = 403; break;
     case 'NotAuthorized': statusCode = 401; break;
+    case 'ResourceNotFound': statusCode = 404; break;
     case 'AuthorizationError': statusCode = 401; break;
     case 'InvalidPayloadError': statusCode = 400; break;
     case 'InvalidResourceError': statusCode = 400; break;

@@ -12,6 +12,7 @@ const Errors = {
   NotAuthorized: class extends BaseError { },
   ValidationError: class extends BaseError { },
   ForbiddenError: class extends BaseError { },
+  ResourceNotFound: class extends BaseError { },
   AuthorizationError: class extends BaseError { },
   InvalidPayloadError: class extends BaseError { },
   InvalidResourceError: class extends BaseError { },
