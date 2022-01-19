@@ -7,7 +7,7 @@ export const getUserFromObject = (user: Partial<User>): User => {
   }
 
   return {
-    name: `${user.firstName} ${user.lastName}`.trim(),
+    name: `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim(),
     lastName: user.lastName ?? '',
     firstName: user.firstName ?? '',
     isEmailVerified: user.isEmailVerified ?? false,
@@ -18,16 +18,16 @@ export const getUserFromObject = (user: Partial<User>): User => {
     avatarUrl: user.avatarUrl ?? '',
     meta: {
       location: {
-        city: user.meta?.location.city ?? '',
-        address: user.meta?.location.address ?? '',
-        country: user.meta?.location.country ?? '',
-        zipCode: user.meta?.location.zipCode ?? 0,
+        city: user.meta?.location?.city ?? '',
+        address: user.meta?.location?.address ?? '',
+        country: user.meta?.location?.country ?? '',
+        zipCode: user.meta?.location?.zipCode ?? '000000',
       },
       payment: {
-        expiry: user.meta?.payment.expiry ?? '',
-        provider: user.meta?.payment.provider ?? '',
-        accountNo: user.meta?.payment.accountNo ?? '',
-        paymentType: user.meta?.payment.paymentType ?? '',
+        expiry: user.meta?.payment?.expiry ?? '',
+        provider: user.meta?.payment?.provider ?? '',
+        accountNo: user.meta?.payment?.accountNo ?? '',
+        paymentType: user.meta?.payment?.paymentType ?? '',
       }
     },
   };
