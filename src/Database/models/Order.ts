@@ -6,19 +6,19 @@ const OrderSchema = new Schema({
   },
   meta: {
     quantity: {
-      type: Number
+      type: Number, default: 1
     },
     productId: {
-      type: Schema.Types.ObjectId
+      type: Schema.Types.ObjectId, required: [true, 'product identified not specified']
     },
     trackingId: {
-      type: String
+      type: String, default: ''
     },
     location: {
-      city: { type: String, lowercase: true },
-      address: { type: String, lowercase: true },
-      country: { type: String, lowercase: true },
-      zip_code: { type: String, lowercase: true, length: 6 },
+      city: { type: String, lowercase: true, default: '' },
+      address: { type: String, lowercase: true, default: '' },
+      country: { type: String, lowercase: true, default: '' },
+      zipCode: { type: Number, length: 6, default: null },
     },
   }
 },

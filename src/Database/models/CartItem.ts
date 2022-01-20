@@ -5,14 +5,16 @@ const CartItemSchema = new Schema({
     type: Number, default: 1
   },
   userId: {
-    type: Schema.Types.ObjectId, required: true, immutable: true
+    type: Schema.Types.ObjectId, immutable: true, required: [true, 'you must be logged to add item(s) to cart'],
   },
   productId: {
-    type: Schema.Types.ObjectId, required: true, immutable: true
+    type: Schema.Types.ObjectId, immutable: true, required: [true, 'product id is required to add item(s) to cart'],
   }
-}, {
-  timestamps: true
-});
+},
+  {
+    timestamps: true
+  }
+);
 
 const CartItem = model('CartItem', CartItemSchema);
 
