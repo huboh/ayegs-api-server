@@ -28,9 +28,7 @@ export function injectMiddlewares(server: Express | Router, middlewares: Request
 }
 
 export function isInstanceof<T extends Function>(value: unknown, classes: T[]): value is T {
-  return classes.every((c) => {
-    value instanceof c;
-  });
+  return classes.some((c) => value instanceof c);
 }
 
 /**
