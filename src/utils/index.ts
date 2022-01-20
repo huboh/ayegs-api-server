@@ -9,7 +9,7 @@ import validator from 'validator';
 import { STATUS_CODES } from 'http';
 import { Error as MongooseError } from 'mongoose';
 import { SendJsonProps, SubmittedUser } from '../types';
-import { Express, Response, RequestHandler } from 'express';
+import { Express, Request, Response, RequestHandler } from 'express';
 
 
 export function sendJson(response: Response, jsonData: SendJsonProps) {
@@ -64,16 +64,16 @@ export function validateSubmittedUserDetails(user: SubmittedUser): SubmittedUser
   );
 }
 
-export function getHeaderAuthToken(header: string | undefined, type: 'Bearer' | 'Basic') {
-  const errors: string[] = [];
-  const errorMessage = 'authorization error';
+export function getHeaderAuthToken(request: Request, type: 'Bearer' | 'Basic') {
+  const header = request.header('Authorization');
   const [authType, token] = header?.trim().split(' ') ?? [];
+  const errors: string[] = [];
 
-  (token == undefined) && errors.push(`no token specified`);
-  (authType !== type) && errors.push(`invalid authorization type`);
+  (token == undefined) && errors.push(`invalid auth token`);
+  (authType !== type) && errors.push(`invalid auth type`);
 
   if (errors.length) {
-    throw new Errors.InvalidPayloadError(errorMessage, errors);
+    throw new Errors.NotAuthorized('Not Authorized', errors);
   }
 
   return token;
