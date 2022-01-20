@@ -24,7 +24,7 @@ export interface User {
   firstName: string | null;
   isEmailVerified: boolean;
   isPhoneVerified: boolean;
-  email: string;
+  email: string | null;
   phone: string | null;
   avatarUrl: string | null;
   meta: {
@@ -32,7 +32,7 @@ export interface User {
       city: string | null;
       address: string | null;
       country: string | null;
-      zipCode: string | null,
+      zipCode: number | null,
     },
     payment: {
       expiry: string | null;
