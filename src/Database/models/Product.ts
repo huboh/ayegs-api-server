@@ -2,40 +2,40 @@ import { Schema, model } from 'mongoose';
 
 const ProductSchema = new Schema({
   title: {
-    type: String, lowercase: true
+    type: String, lowercase: true, required: [true, 'product title not specified']
   },
   mainImageUrl: {
-    type: String
+    type: String, required: [true, 'product main image not specified']
   },
   meta: {
     sku: {
-      type: String, lowercase: true
+      type: String, lowercase: true, default: ''
     },
     price: {
-      currency: { type: String, lowercase: true },
-      current: { type: String, lowercase: true },
-      previous: { type: String, lowercase: true },
+      currency: { type: String, lowercase: true, default: '' },
+      current: { type: String, lowercase: true, required: [true, 'product price not specified'] },
+      previous: { type: String, lowercase: true, default: '' },
     },
     desc: {
-      long: { type: String, lowercase: true },
-      short: { type: String, lowercase: true }
+      long: { type: String, lowercase: true, default: '' },
+      short: { type: String, lowercase: true, default: '' }
     },
     reviews: {
-      average: { type: Number },
-      count: { type: Number },
+      average: { type: Number, default: 0.0 },
+      count: { type: Number, default: 0 },
     },
     categoriesId: [
       Schema.Types.ObjectId
     ],
     imagesUrl: [
-      { type: String, }
+      { type: String, default: '' }
     ],
     stock: {
-      type: Number
+      type: Number, default: 0
     },
     discount: {
-      percent: Number,
-      active: Boolean
+      percent: { type: Number, default: 0 },
+      active: { type: Boolean, default: false }
     }
   }
 },
