@@ -23,8 +23,8 @@ const handleTokenError = (error: unknown, response: Response) => {
   const { JsonWebTokenError, NotBeforeError, TokenExpiredError } = jsonWebToken;
 
   if (isInstanceof(error, [JsonWebTokenError, NotBeforeError, TokenExpiredError])) {
-    const message = error.name == 'TokenExpiredError' ? 'error: token expired' : 'error: invalid token';
-    const statusCode = 403;
+    const message = error.name == 'TokenExpiredError' ? 'session expired' : 'invalid token';
+    const statusCode = 401;
 
     sendJson(response, {
       message,
