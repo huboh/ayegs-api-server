@@ -9,7 +9,7 @@ import validator from 'validator';
 import { STATUS_CODES } from 'http';
 import { Error as MongooseError } from 'mongoose';
 import { SendJsonProps, SubmittedUser } from '../types';
-import { Express, Request, Response, RequestHandler } from 'express';
+import { Express, Router, Request, Response, RequestHandler } from 'express';
 
 
 export function sendJson(response: Response, jsonData: SendJsonProps) {
@@ -23,7 +23,7 @@ export function startServer(server: Express, port: number | string, callback?: (
   server.listen(Number(port), callback);
 }
 
-export function injectMiddlewares(server: Express, middlewares: RequestHandler[]) {
+export function injectMiddlewares(server: Express | Router, middlewares: RequestHandler[]) {
   server.use(...middlewares);
 }
 
