@@ -33,12 +33,24 @@ export function isInstanceof<T extends Function>(value: unknown, classes: T[]): 
   });
 }
 
-export function validateUser(user: SubmittedUser) {
-  const { email, password, firstName } = user;
+/**
+ * validates `email` & `password` & optionally validates `name` `firstName` `lastName` if present
+ */
+export function validateSubmittedUserDetails(user: SubmittedUser): SubmittedUser {
+  const { email, password, name, lastName, firstName } = user;
+
+  if (!email || !password) throw new Errors.InvalidPayloadError(
+    'email or password not specified'
+  );
+
   const errors = [
     validator.isEmail(email) ? true : 'invalid email address',
-    validator.isAlpha(firstName ?? 'null') ? true : 'invalid name : must only contain letters',
-    validator.isStrongPassword(password, { minLength: 6 }) ? true : 'invalid password : must contain at least 1 LowerCase letter, Uppercase letter & a Symbol'
+    validator.isStrongPassword(password, { minLength: 6 }) ? true : 'password must be atleast 6 character & contains at least 1 LowerCase letter, Uppercase letter & a Symbol',
+
+    // non required fields : if field is truthy validate it or else make it pass test explicitly
+    name ? (validator.isAlpha(name) ? true : 'name must only contain letters') : true,
+    firstName ? (validator.isAlpha(firstName) ? true : 'first name must only contain letters') : true,
+    lastName ? (validator.isAlpha(lastName) ? true : 'last name must only contain letters') : true,
   ].filter(
     (e) => typeof e !== 'boolean'
   );
