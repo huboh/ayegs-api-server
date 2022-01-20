@@ -4,16 +4,16 @@ import { Schema, model } from 'mongoose';
 
 const UserSchema = new Schema({
   name: {
-    type: String, lowercase: true
+    type: String, lowercase: true, default: '',
   },
   avatarUrl: {
-    type: String, lowercase: true
+    type: String, lowercase: true, default: '',
   },
   lastName: {
-    type: String, lowercase: true
+    type: String, lowercase: true, default: '',
   },
   firstName: {
-    type: String, lowercase: true
+    type: String, lowercase: true, default: '',
   },
   isEmailVerified: {
     type: Boolean, default: false
@@ -22,7 +22,9 @@ const UserSchema = new Schema({
     type: Boolean, default: false
   },
   password: {
-    type: String, required: [true, 'password is required'], minlength: [6, 'minimum password lenght is 6'],
+    type: String, required: [true, 'password is required'], minlength: [6, 'minimum password lenght is 6'], validate: [
+      (password: string) => validator.isStrongPassword(password, { minLength: 6 }), 'password must contains at least 1 LowerCase letter, Uppercase letter & a Symbol'
+    ]
   },
   email: {
     type: String, unique: true, required: [true, 'email address is required'], lowercase: true, validate: [
@@ -30,22 +32,23 @@ const UserSchema = new Schema({
     ]
   },
   phone: {
-    type: String, unique: true, validate: [
-      (number: string) => number ? validator.isMobilePhone(number, undefined, { strictMode: true }) : true, 'invalid phone number'
+    type: String, unique: true, default: '', validate: [
+      // if phone number is not specified return true explicitly
+      (number: string) => number ? validator.isMobilePhone(number, undefined, { strictMode: true }) : true, 'invalid phone number,please make sure country code is specified'
     ]
   },
   meta: {
     location: {
-      city: { type: String, lowercase: true },
-      address: { type: String, lowercase: true },
-      country: { type: String, lowercase: true },
-      zipCode: { type: String, lowercase: true, length: 6 },
+      city: { type: String, lowercase: true, default: '', },
+      address: { type: String, lowercase: true, default: '', },
+      country: { type: String, lowercase: true, default: '', },
+      zipCode: { type: Number, default: null, },
     },
     payment: {
-      expiry: { type: String, lowercase: true },
-      provider: { type: String, lowercase: true },
-      accountNo: { type: String, lowercase: true },
-      paymentType: { type: String, lowercase: true },
+      expiry: { type: String, lowercase: true, default: '' },
+      provider: { type: String, lowercase: true, default: '' },
+      accountNo: { type: String, lowercase: true, default: '' },
+      paymentType: { type: String, lowercase: true, default: '' },
     }
   },
 },
