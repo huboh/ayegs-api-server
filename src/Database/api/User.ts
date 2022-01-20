@@ -1,25 +1,23 @@
 import User from "../models/User";
 import { isValidObjectId } from 'mongoose';
-import { getUserFromObject } from "../utils";
-import { User as UserType, SubmittedUser } from "../../types";
-import { Errors, validateUser, passwords } from "../../utils";
+import { SubmittedUser, UserFromDB } from "../../types";
+import { Errors, validateSubmittedUserDetails, passwords } from "../../utils";
 
 
 export default {
-
-  async getUser(query: { email?: string; _id?: string; }): Promise<(UserType & { _id: string; }) | null> {
+  async getUser(query: { email?: string; _id?: string; }): Promise<UserFromDB | null> {
     return (query._id && !isValidObjectId(query._id)) ? null : User.findOne({
       ...query
     });
   },
 
-  async registerUser(userDetails: Partial<UserType>) {
+  async registerUser(userDetails: SubmittedUser): Promise<UserFromDB> {
     if (await this.getUser({ email: userDetails.email })) throw new Errors.ForbiddenError(
-      'user already exists'
+      'email address already registered, please login'
     );
 
     return User.create(
-      getUserFromObject(userDetails)
+      userDetails
     );
   },
 
@@ -31,8 +29,8 @@ export default {
 
   },
 
-  async loginUser(userDetails: Partial<SubmittedUser>) {
-    const validatedUserDetails = validateUser(userDetails as SubmittedUser);
+  async loginUser(userDetails: SubmittedUser) {
+    const validatedUserDetails = validateSubmittedUserDetails(userDetails);
     const userFromDatabase = await this.getUser({ email: validatedUserDetails.email });
 
     if (userFromDatabase) {
@@ -56,5 +54,4 @@ export default {
       );
     }
   }
-
 };
