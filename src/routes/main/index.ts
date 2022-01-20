@@ -1,9 +1,8 @@
 import { Router } from 'express';
 import DataBase from '../../Database';
-import { Errors, passwords } from '../../utils';
 import { SubmittedUser } from '../../types';
 import { getUserFromObject } from '../../Database/utils';
-import { sendJson, handleError, handleMongooseError, validateUser, tokens, getHeaderAuthToken } from '../../utils';
+import { sendJson, handleError, handleMongooseError, validateSubmittedUserDetails, tokens } from '../../utils';
 
 const database = new DataBase();
 const mainRouter = Router({ caseSensitive: false });
@@ -21,10 +20,10 @@ mainRouter.post('/signup', async (request, response, next) => {
 
   try {
     const submittedUserDetails = request.body as SubmittedUser;
-    const validatedUserDetails = validateUser(submittedUserDetails);
+    const validatedUserDetails = validateSubmittedUserDetails(submittedUserDetails);
     const userFromDatabase = await database.User.registerUser(validatedUserDetails);
     const token = await tokens.generateToken({ userId: userFromDatabase._id });
-    const user = { ...getUserFromObject(userFromDatabase), password: undefined };
+    const user = getUserFromObject(userFromDatabase);
 
     sendJson(response, {
       statusCode: 201,
@@ -43,10 +42,10 @@ mainRouter.post('/login', async (request, response, next) => {
 
   try {
     const submittedUserDetails = request.body as SubmittedUser;
-    const { email, password } = validateUser(submittedUserDetails);
+    const { email, password } = validateSubmittedUserDetails(submittedUserDetails);
     const userFromDatabase = await database.User.loginUser({ email, password });
     const token = await tokens.generateToken({ userId: userFromDatabase._id });
-    const user = { ...getUserFromObject(userFromDatabase), password: undefined };
+    const user = getUserFromObject(userFromDatabase);
 
     sendJson(response, {
       statusCode: 202,
