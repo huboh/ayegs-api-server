@@ -41,9 +41,9 @@ cartRouter.post('/items', async (request, response, next) => {
   }
 });
 
-cartRouter.put('/items/:id/:qty?', async (request, response, next) => {
+cartRouter.put('/items/:id?/:qty?', async (request, response, next) => {
   try {
-    const _id = request.params.id;
+    const _id = request.params.id ?? request.body.id;
     const userId = response.locals.user._id;
     const quantity = Number(request.params.qty ?? request.body.quantity);
     const result = await database.CartItem.updateQuantity({ _id, userId, quantity });
@@ -59,9 +59,9 @@ cartRouter.put('/items/:id/:qty?', async (request, response, next) => {
   }
 });
 
-cartRouter.delete('/items/:id', async (request, response, next) => {
+cartRouter.delete('/items/:id?', async (request, response, next) => {
   try {
-    const _id = request.params.id;
+    const _id = request.params.id ?? request.body.id;
     const userId = response.locals.user._id;
     const deleted = await database.CartItem.removeCartItem({ userId, _id });
 
