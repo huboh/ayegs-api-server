@@ -24,7 +24,7 @@ cartRouter.get('/items', async (request, response, next) => {
   }
 });
 
-cartRouter.post('/add', async (request, response, next) => {
+cartRouter.post('/items', async (request, response, next) => {
   try {
     const { productIds } = request.body;
     const { _id: userId } = response.locals.user;
