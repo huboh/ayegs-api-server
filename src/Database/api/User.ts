@@ -1,24 +1,28 @@
 import User from "../models/User";
 import { isValidObjectId } from 'mongoose';
 import { SubmittedUser, UserFromDB, UserId } from "../../types";
-import { Errors, validateSubmittedUserDetails, passwords } from "../../utils";
+import { Errors, validateSubmittedUserDetails, passwords, verifyMongooseIdentifiers } from "../../utils";
 
 
 export default {
   async userExists(query: { email?: string; _id?: UserId; }): Promise<boolean> {
+    verifyMongooseIdentifiers(query._id);
+
     return (query._id && !isValidObjectId(query._id)) ? false : User.exists({
       ...query
     });
   },
 
   async getUser(query: { email?: string; _id?: UserId; }): Promise<UserFromDB | null> {
-    return (query._id && !isValidObjectId(query._id)) ? null : User.findOne({
+    verifyMongooseIdentifiers(query._id);
+
+    return User.findOne({
       ...query
     });
   },
 
   async registerUser(userDetails: SubmittedUser): Promise<UserFromDB> {
-    if (await this.getUser({ email: userDetails.email })) throw new Errors.ForbiddenError(
+    if (await this.userExists({ email: userDetails.email })) throw new Errors.ForbiddenError(
       'email address already registered, please login'
     );
 
