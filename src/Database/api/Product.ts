@@ -1,13 +1,18 @@
 import Product from "../models/Product";
 
 import { Errors } from '../../utils';
-import { GetProductResponse } from '../../types';
+import { GetProductResponse, ProductId } from '../../types';
 import { ObjectId, isValidObjectId, FilterQuery } from 'mongoose';
 
 const initialPage = 1;
 const Querylimit = 50;
 
 export default {
+  async productExists(_id: ProductId): Promise<boolean> {
+    return (_id && !isValidObjectId(_id)) ? false : Product.findOne({
+      _id
+    });
+  },
 
   async getProducts(page = initialPage, limit = Querylimit, query?: FilterQuery<any>): Promise<GetProductResponse> {
 
@@ -29,7 +34,7 @@ export default {
     };
   },
 
-  async getProductById(_id: string | ObjectId): Promise<any> {
+  async getProductById(_id: ProductId): Promise<any> {
     if (!isValidObjectId(_id)) throw new Errors.ResourceNotFound(
       'invalid resource idenitifier'
     );
