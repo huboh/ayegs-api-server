@@ -2,6 +2,7 @@ import { ObjectId } from 'mongoose';
 
 export type UserId = Object | string;
 export type ProductId = Object | string;
+export type CartItemId = Object | string;
 
 export type ResponseStatusText = 'success' | 'error';
 
@@ -65,4 +66,43 @@ export interface GetProductResponse {
   currentPage: number;
   previousPage: number;
   products: unknown[];
+}
+
+export interface AddCartItemsProp {
+  userId: UserId;
+  products: Array<{
+    quantity?: number;
+    productId: ProductId;
+  }>;
+}
+
+export interface AddCartItemProp {
+  userId: UserId;
+  productId: ProductId;
+  quantity?: number;
+}
+
+export interface GetCartItemProp {
+  userId: UserId;
+  _id?: CartItemId;
+  productId?: ProductId;
+}
+
+export interface UpdateCartItemsProp {
+  userId: UserId;
+  _id?: CartItemId;
+  productId?: ProductId;
+  quantity?: number;
+}
+
+export interface RemoveCartItemProp {
+  userId: UserId;
+  _id?: CartItemId;
+  productId?: ProductId;
+}
+
+export interface CartItemExistsProp {
+  userId: UserId;
+  _id?: CartItemId;
+  productId?: ProductId;
 }
