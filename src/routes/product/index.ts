@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import DataBase from '../../Database';
-import { sendJson, handleError } from '../../utils';
+import { sendJson, handleError, handleMongooseError } from '../../utils';
 
 const database = new DataBase();
 const productRouter = Router({ caseSensitive: false });
@@ -18,7 +18,7 @@ productRouter.get('/', async (request, response, next) => {
     });
 
   } catch (error) {
-    handleError(error, request, response, next);
+    handleMongooseError(error, response) || handleError(error, request, response, next);
   }
 });
 
@@ -35,7 +35,7 @@ productRouter.get('/recently-added', async (request, response, next) => {
     });
 
   } catch (error) {
-    handleError(error, request, response, next);
+    handleMongooseError(error, response) || handleError(error, request, response, next);
   }
 });
 
@@ -52,7 +52,7 @@ productRouter.post('/add', async (request, response, next) => {
     });
 
   } catch (error) {
-    handleError(error, request, response, next);
+    handleMongooseError(error, response) || handleError(error, request, response, next);
   }
 });
 
@@ -67,7 +67,7 @@ productRouter.get('/categories', async (request, response, next) => {
     });
 
   } catch (error) {
-    handleError(error, request, response, next);
+    handleMongooseError(error, response) || handleError(error, request, response, next);
   }
 });
 
