@@ -7,8 +7,8 @@ export { default as handleError } from './errors/handleError';
 import { Errors } from '.';
 import validator from 'validator';
 import { STATUS_CODES } from 'http';
-import { Error as MongooseError } from 'mongoose';
 import { SendJsonProps, SubmittedUser } from '../types';
+import { Error as MongooseError, isValidObjectId } from 'mongoose';
 import { Express, Router, Request, Response, RequestHandler } from 'express';
 
 
@@ -126,3 +126,11 @@ export function handleMongooseError(error: unknown, response: Response) {
 
   return wasHandled;
 }
+
+export const verifyMongooseIdentifiers = (...ids: unknown[]) => ids.forEach(id => {
+  if (id && !isValidObjectId(id)) {
+    throw new Errors.ValidationError(
+      'Validation Error', ['invalid idenitifier']
+    );
+  }
+});
