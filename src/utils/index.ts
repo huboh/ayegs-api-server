@@ -13,10 +13,10 @@ import { Express, Router, Request, Response, RequestHandler } from 'express';
 
 
 export function sendJson(response: Response, jsonData: SendJsonProps) {
-  const { statusCode, status, message, data, errors } = jsonData;
+  const { statusCode, status, message = STATUS_CODES[statusCode], data, errors } = jsonData;
 
   response.status(statusCode);
-  response.json({ status, data, errors, message: message ?? STATUS_CODES[statusCode] });
+  response.json({ status, message, data, errors, });
 }
 
 export function startServer(server: Express, port: number | string, callback?: () => void) {
