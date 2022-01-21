@@ -1,5 +1,8 @@
 import { ObjectId } from 'mongoose';
 
+export type UserId = Object | string;
+export type ProductId = Object | string;
+
 export type ResponseStatusText = 'success' | 'error';
 
 export interface SendJsonProps {
@@ -44,7 +47,7 @@ export interface User {
 }
 
 export interface UserFromDB extends User {
-  _id: string;
+  _id: UserId;
   __v: number;
   password: string;
   createdAt: Date | string;
@@ -52,6 +55,14 @@ export interface UserFromDB extends User {
 }
 
 export interface GetProductProps {
-  _id?: string | ObjectId;
+  _id?: UserId;
   count: number;
+}
+
+export interface GetProductResponse {
+  limit: number;
+  total: number;
+  currentPage: number;
+  previousPage: number;
+  products: unknown[];
 }
