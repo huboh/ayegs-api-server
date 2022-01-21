@@ -6,8 +6,8 @@ import { UserId, ProductId } from "../../types";
 
 export default {
   async getCartItems(userId: UserId): Promise<unknown[]> {
-    if (!isValidObjectId(userId)) throw new Errors.ResourceNotFound(
-      'error getting cart items(s)', ['invalid idenitifier']
+    if (!isValidObjectId(userId)) throw new Errors.ValidationError(
+      'validation error', ['invalid idenitifier']
     );
 
     return CartItem.find(
