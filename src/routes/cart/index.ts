@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import DataBase from '../../Database';
 import * as auth from '../../middlewares/auth';
-import { sendJson, handleError, injectMiddlewares } from '../../utils';
+import { sendJson, handleError, handleMongooseError, injectMiddlewares } from '../../utils';
 
 const database = new DataBase();
 const cartRouter = Router({ caseSensitive: false });
@@ -20,7 +20,7 @@ cartRouter.get('/items', async (request, response, next) => {
     });
 
   } catch (error) {
-    handleError(error, request, response, next);
+    handleMongooseError(error, response) || handleError(error, request, response, next);
   }
 });
 
@@ -37,7 +37,7 @@ cartRouter.post('/items', async (request, response, next) => {
     });
 
   } catch (error) {
-    handleError(error, request, response, next);
+    handleMongooseError(error, response) || handleError(error, request, response, next);
   }
 });
 
