@@ -1,11 +1,17 @@
 import User from "../models/User";
 import { isValidObjectId } from 'mongoose';
-import { SubmittedUser, UserFromDB } from "../../types";
+import { SubmittedUser, UserFromDB, UserId } from "../../types";
 import { Errors, validateSubmittedUserDetails, passwords } from "../../utils";
 
 
 export default {
-  async getUser(query: { email?: string; _id?: string; }): Promise<UserFromDB | null> {
+  async userExists(query: { email?: string; _id?: UserId; }): Promise<boolean> {
+    return (query._id && !isValidObjectId(query._id)) ? false : User.exists({
+      ...query
+    });
+  },
+
+  async getUser(query: { email?: string; _id?: UserId; }): Promise<UserFromDB | null> {
     return (query._id && !isValidObjectId(query._id)) ? null : User.findOne({
       ...query
     });
