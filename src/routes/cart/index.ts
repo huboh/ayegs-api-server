@@ -11,12 +11,12 @@ injectMiddlewares(cartRouter, [auth.requiresAuthMiddleware]);
 cartRouter.get('/items', async (request, response, next) => {
   try {
     const { _id: userId } = response.locals.user;
-    const cartItems = await database.CartItem.getCartItems(userId);
+    const data = await database.CartItem.getCartItems(userId);
 
     sendJson(response, {
       statusCode: 200,
       status: 'success',
-      data: { count: cartItems.length, cartItems }
+      data
     });
 
   } catch (error) {
@@ -26,14 +26,49 @@ cartRouter.get('/items', async (request, response, next) => {
 
 cartRouter.post('/items', async (request, response, next) => {
   try {
-    const { productIds } = request.body;
+    const { products } = request.body;
     const { _id: userId } = response.locals.user;
-    const cartItems = await database.CartItem.addCartItems(userId, productIds);
+    const results = await database.CartItem.addCartItems({ userId, products });
 
     sendJson(response, {
       statusCode: 200,
       status: 'success',
-      // data: { count: cartItems.length, cartItems }
+      data: { results }
+    });
+
+  } catch (error) {
+    handleMongooseError(error, response) || handleError(error, request, response, next);
+  }
+});
+
+cartRouter.put('/items/:id/:qty?', async (request, response, next) => {
+  try {
+    const _id = request.params.id;
+    const userId = response.locals.user._id;
+    const quantity = Number(request.params.qty ?? request.body.quantity);
+    const result = await database.CartItem.updateQuantity({ _id, userId, quantity });
+
+    sendJson(response, {
+      statusCode: 200,
+      status: 'success',
+      data: { result }
+    });
+
+  } catch (error) {
+    handleMongooseError(error, response) || handleError(error, request, response, next);
+  }
+});
+
+cartRouter.delete('/items/:id', async (request, response, next) => {
+  try {
+    const _id = request.params.id;
+    const userId = response.locals.user._id;
+    const deleted = await database.CartItem.removeCartItem({ userId, _id });
+
+    sendJson(response, {
+      statusCode: 200,
+      status: 'success',
+      data: { deleted }
     });
 
   } catch (error) {
