@@ -12,6 +12,8 @@ export default class DataBase {
   // * models api
   public User = api.User;
   public Product = api.Product;
+  public CartItem = api.CartItem;
+  public Category = api.Category;
 
   private connection: Connection = mongoose.connection;
   private static _singletonInstance: DataBase;
