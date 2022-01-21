@@ -13,7 +13,8 @@ import { Express, Router, Request, Response, RequestHandler } from 'express';
 
 
 export function sendJson(response: Response, jsonData: SendJsonProps) {
-  const { statusCode, status, message = STATUS_CODES[statusCode], data, errors } = jsonData;
+  let { statusCode, status, message, data, errors } = jsonData;
+  message = message || STATUS_CODES[statusCode];
 
   response.status(statusCode);
   response.json({ status, message, data, errors, });
