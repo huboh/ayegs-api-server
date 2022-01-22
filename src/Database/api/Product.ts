@@ -1,15 +1,17 @@
 import Product from "../models/Product";
 
-import { Errors } from '../../utils';
+import { Errors, verifyMongooseIdentifiers } from '../../utils';
 import { GetProductResponse, ProductId } from '../../types';
-import { ObjectId, isValidObjectId, FilterQuery } from 'mongoose';
+import { isValidObjectId, FilterQuery } from 'mongoose';
 
 const initialPage = 1;
 const Querylimit = 50;
 
 export default {
-  async productExists(_id: ProductId): Promise<boolean> {
-    return (_id && !isValidObjectId(_id)) ? false : Product.findOne({
+  async productExists(_id: ProductId) {
+    verifyMongooseIdentifiers(_id);
+
+    return Product.exists({
       _id
     });
   },

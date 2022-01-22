@@ -5,10 +5,10 @@ import { Errors, validateSubmittedUserDetails, passwords, verifyMongooseIdentifi
 
 
 export default {
-  async userExists(query: { email?: string; _id?: UserId; }): Promise<boolean> {
+  async userExists(query: { email?: string; _id?: UserId; }) {
     verifyMongooseIdentifiers(query._id);
 
-    return (query._id && !isValidObjectId(query._id)) ? false : User.exists({
+    return User.exists({
       ...query
     });
   },
