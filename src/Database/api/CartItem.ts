@@ -1,4 +1,3 @@
-import User from "./User";
 import Product from "./Product";
 import CartItem from "../models/CartItem";
 
@@ -48,18 +47,18 @@ export default {
     );
   },
 
-  async addCartItem({ userId, productId, quantity }: AddCartItemProp) {
+  async addCartItem({ userId, productId, quantity: qty }: AddCartItemProp) {
     let result = true;
 
     try {
       verifyMongooseIdentifiers(userId, productId);
 
-      quantity = isNaN(Number(quantity)) ? 1 : quantity;
-      const [productExists, userExists, itemInCart] = await Promise.all([
-        Product.productExists(productId), User.userExists({ _id: userId }), this.cartItemsExists({ userId, productId })
+      const quantity = isNaN(Number(qty)) ? 1 : qty;
+      const [productExists, itemInCart] = await Promise.all([
+        Product.productExists(productId), this.cartItemsExists({ userId, productId })
       ]);
 
-      if (!productExists && !userExists) throw new Errors.ValidationError(
+      if (!productExists) throw new Errors.ValidationError(
         'validation error', ['error adding item to cart']
       );
 
@@ -88,10 +87,10 @@ export default {
     ).deletedCount === 1;
   },
 
-  async updateQuantity({ _id, userId, productId, quantity }: UpdateCartItemsProp) {
+  async updateQuantity({ _id, userId, productId, quantity: qty }: UpdateCartItemsProp) {
     verifyMongooseIdentifiers(_id, userId, productId);
-    quantity = isNaN(Number(quantity)) ? 1 : quantity;
 
+    const quantity = isNaN(Number(qty)) ? 1 : qty;
     const cartItem = await this.getCartItem({ userId, productId, _id });
 
     if (!cartItem) throw new Errors.ResourceNotFound(
