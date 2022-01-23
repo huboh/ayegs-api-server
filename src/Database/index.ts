@@ -11,6 +11,7 @@ interface ConnectProps {
 export default class DataBase {
   // * models api
   public User = api.User;
+  public Order = api.Order;
   public Product = api.Product;
   public CartItem = api.CartItem;
   public Category = api.Category;

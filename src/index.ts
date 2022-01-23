@@ -17,6 +17,7 @@ injectMiddlewares(app, middlewares);
 
 app.use('/api', routes.mainRouter);
 app.use('/api/cart', routes.cartRouter);
+app.use('/api/orders', routes.ordersRouter);
 app.use('/api/account', routes.accountRouter);
 app.use('/api/products', routes.productRouter);
 
