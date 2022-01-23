@@ -87,7 +87,7 @@ export default {
     ).deletedCount === 1;
   },
 
-  async updateQuantity({ _id, userId, productId, quantity: qty }: UpdateCartItemsProp) {
+  async updateQuantity({ _id, userId, productId, quantity: qty = 1 }: UpdateCartItemsProp) {
     verifyMongooseIdentifiers(_id, userId, productId);
 
     const quantity = isNaN(Number(qty)) ? 1 : qty;
