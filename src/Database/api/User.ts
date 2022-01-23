@@ -1,6 +1,6 @@
 import User from "../models/User";
 import { isValidObjectId } from 'mongoose';
-import { SubmittedUser, UserFromDB, UserId } from "../../types";
+import { SubmittedUser, UserModel, UserId } from "../../types";
 import { Errors, validateSubmittedUserDetails, passwords, verifyMongooseIdentifiers } from "../../utils";
 
 
@@ -13,7 +13,7 @@ export default {
     });
   },
 
-  async getUser(query: { email?: string; _id?: UserId; }): Promise<UserFromDB | null> {
+  async getUser(query: { email?: string; _id?: UserId; }): Promise<UserModel | null> {
     verifyMongooseIdentifiers(query._id);
 
     return User.findOne({
@@ -21,7 +21,7 @@ export default {
     });
   },
 
-  async registerUser(userDetails: SubmittedUser): Promise<UserFromDB> {
+  async registerUser(userDetails: SubmittedUser): Promise<UserModel> {
     if (await this.userExists({ email: userDetails.email })) throw new Errors.ForbiddenError(
       'email address already registered, please login'
     );
