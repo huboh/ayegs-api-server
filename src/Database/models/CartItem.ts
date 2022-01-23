@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { CartItemModel } from '../../types';
 
 const CartItemSchema = new Schema({
   quantity: {
@@ -16,7 +17,7 @@ const CartItemSchema = new Schema({
   }
 );
 
-const CartItem = model('CartItem', CartItemSchema);
+const CartItem = model<CartItemModel>('CartItem', CartItemSchema);
 
 export {
   CartItem as default

@@ -1,6 +1,7 @@
 import validator from 'validator';
 import { passwords } from '../../utils';
 import { Schema, model } from 'mongoose';
+import { UserModel } from '../../types';
 
 const UserSchema = new Schema({
   name: {
@@ -61,7 +62,7 @@ UserSchema.pre('save', async function () {
   this.password = await passwords.hashPassword(this.password);
 });
 
-const User = model('User', UserSchema);
+const User = model<UserModel>('User', UserSchema);
 
 export {
   User as default

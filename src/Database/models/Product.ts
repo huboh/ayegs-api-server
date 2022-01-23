@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { ProductModel } from '../../types';
 
 const ProductSchema = new Schema({
   title: {
@@ -44,7 +45,7 @@ const ProductSchema = new Schema({
   }
 );
 
-const Product = model('Product', ProductSchema);
+const Product = model<ProductModel>('Product', ProductSchema);
 
 export {
   Product as default
