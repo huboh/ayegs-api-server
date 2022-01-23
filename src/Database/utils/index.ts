@@ -1,26 +1,26 @@
 import { User } from "../../types";
 
-export const getUserFromObject = (user: Partial<User>): User => ({
-  name: user.name ?? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() ?? null,
-  lastName: user.lastName ?? null,
-  firstName: user.firstName ?? null,
+export const normalizeUser = (user: User): Partial<User> => ({
+  name: user.name ?? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() ?? '',
+  lastName: user.lastName ?? '',
+  firstName: user.firstName ?? '',
   isEmailVerified: user.isEmailVerified ?? false,
   isPhoneVerified: user.isPhoneVerified ?? false,
-  email: user.email ?? null,
-  phone: user.phone ?? null,
-  avatarUrl: user.avatarUrl ?? null,
+  email: user.email ?? '',
+  phone: user.phone ?? '',
+  avatarUrl: user.avatarUrl ?? '',
   meta: {
     location: {
-      city: user.meta?.location?.city ?? null,
-      address: user.meta?.location?.address ?? null,
-      country: user.meta?.location?.country ?? null,
+      city: user.meta?.location?.city ?? '',
+      address: user.meta?.location?.address ?? '',
+      country: user.meta?.location?.country ?? '',
       zipCode: user.meta?.location?.zipCode ?? null,
     },
     payment: {
-      expiry: user.meta?.payment?.expiry ?? null,
-      provider: user.meta?.payment?.provider ?? null,
-      accountNo: user.meta?.payment?.accountNo ?? null,
-      paymentType: user.meta?.payment?.paymentType ?? null,
+      expiry: user.meta?.payment?.expiry ?? '',
+      provider: user.meta?.payment?.provider ?? '',
+      accountNo: user.meta?.payment?.accountNo ?? '',
+      paymentType: user.meta?.payment?.paymentType ?? '',
     }
   },
 });

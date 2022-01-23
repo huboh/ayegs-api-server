@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import DataBase from '../../Database';
 import { SubmittedUser } from '../../types';
-import { getUserFromObject } from '../../Database/utils';
+import { normalizeUser } from '../../Database/utils';
 import { sendJson, handleError, handleMongooseError, validateSubmittedUserDetails, tokens } from '../../utils';
 
 const database = new DataBase();
@@ -23,7 +23,7 @@ mainRouter.post('/signup', async (request, response, next) => {
     const validatedUserDetails = validateSubmittedUserDetails(submittedUserDetails);
     const userFromDatabase = await database.User.registerUser(validatedUserDetails);
     const token = await tokens.generateToken({ userId: userFromDatabase._id });
-    const user = getUserFromObject(userFromDatabase);
+    const user = normalizeUser(userFromDatabase);
 
     sendJson(response, {
       statusCode: 201,
@@ -45,7 +45,7 @@ mainRouter.post('/login', async (request, response, next) => {
     const { email, password } = validateSubmittedUserDetails(submittedUserDetails);
     const userFromDatabase = await database.User.loginUser({ email, password });
     const token = await tokens.generateToken({ userId: userFromDatabase._id });
-    const user = getUserFromObject(userFromDatabase);
+    const user = normalizeUser(userFromDatabase);
 
     sendJson(response, {
       statusCode: 202,
