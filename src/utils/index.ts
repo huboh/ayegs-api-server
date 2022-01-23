@@ -134,3 +134,41 @@ export const verifyMongooseIdentifiers = (...ids: unknown[]) => ids.forEach(id =
     );
   }
 });
+
+/**
+ * recursively finds the keys from `replacements` in nested objects in `targetObject` & assigns the corresponding value if their type match or ignore otherwise.
+ * the function merge `objects` & combine arrays (by pushing)
+ */
+export const mergeDeepObjects = (targetObject: any, replacements: any) => {
+  for (const replacementKey in replacements) if (Object.prototype.hasOwnProperty.call(replacements, replacementKey)) {
+    for (const targetKey in targetObject) if (Object.prototype.hasOwnProperty.call(targetObject, targetKey)) {
+
+      if (targetKey === replacementKey) {
+        const targetValue = targetObject[targetKey];
+        const replacementValue = replacements[replacementKey];
+
+        if (typeof targetValue === typeof replacementValue) {
+
+          if (typeof targetValue === 'object') {
+            // TODO : if they're both objects or different type, dont mutate it
+
+            if (targetValue instanceof Array && replacementValue instanceof Array) {
+              targetObject[targetKey] = [...targetValue, ...replacementValue];
+
+            } else if (targetValue.constructor.name === "Object" && replacementValue.constructor.name === "Object") {
+              targetObject[targetKey] = { ...targetValue, ...replacementValue };
+            }
+
+          } else {
+            targetObject[targetKey] = replacements[replacementKey];
+          }
+        }
+
+      } else if (typeof targetObject[targetKey] === 'object' && !(targetObject[targetKey] instanceof Array)) {
+        mergeDeepObjects(targetObject[targetKey], replacements);
+      }
+    }
+  }
+
+  return targetObject;
+};
