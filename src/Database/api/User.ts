@@ -63,5 +63,9 @@ export default {
         'invalid email or password'
       );
     }
+  },
+
+  async resetUserPassword(email: any, newPassword: any) {
+
   }
 };

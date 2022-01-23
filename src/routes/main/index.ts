@@ -60,4 +60,22 @@ mainRouter.post('/login', async (request, response, next) => {
 
 });
 
+mainRouter.post('/reset-password', async (request, response, next) => {
+
+  try {
+    const submittedUserDetails = request.body as SubmittedUser;
+    // TODO : send email to the registered user email address, either a otp code or reset url that redirects here
+
+    sendJson(response, {
+      statusCode: 202,
+      status: 'success',
+      message: 'login successful'
+    });
+
+  } catch (error) {
+    tokens.handleTokenError(error, response) || handleError(error, request, response, next);
+  }
+
+});
+
 export default mainRouter;
