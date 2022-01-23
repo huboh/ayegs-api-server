@@ -1,24 +1,28 @@
 import { Schema, model } from 'mongoose';
+import { OrderModel } from '../../types';
 
 const OrderSchema = new Schema({
   userId: {
-    type: Schema.Types.ObjectId
+    type: Schema.Types.ObjectId, required: [true, 'user id required'], immutable: true,
+  },
+  status: {
+    type: String, lowercase: true, default: 'processing'
+  },
+  productId: {
+    type: Schema.Types.ObjectId, immutable: true, required: [true, 'product identifier not specified']
+  },
+  trackingId: {
+    type: String, default: ''
   },
   meta: {
     quantity: {
       type: Number, default: 1
     },
-    productId: {
-      type: Schema.Types.ObjectId, required: [true, 'product identified not specified']
-    },
-    trackingId: {
-      type: String, default: ''
-    },
-    location: {
-      city: { type: String, lowercase: true, default: '' },
-      address: { type: String, lowercase: true, default: '' },
-      country: { type: String, lowercase: true, default: '' },
+    shippingDetails: {
       zipCode: { type: Number, length: 6, default: null },
+      country: { type: String, lowercase: true, default: '' },
+      city: { type: String, lowercase: true, required: [true, 'shipping address city is required'] },
+      address: { type: String, lowercase: true, required: [true, 'shipping address is required'] },
     },
   }
 },
@@ -27,7 +31,7 @@ const OrderSchema = new Schema({
   }
 );
 
-const Order = model('Order', OrderSchema);
+const Order = model<OrderModel>('Order', OrderSchema);
 
 export {
   Order as default
